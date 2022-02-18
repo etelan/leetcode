@@ -1,0 +1,20 @@
+import java.util.Arrays;
+class Solution {
+    public String longestCommonPrefix(String[] strs) {
+        
+        int min = Arrays.stream(strs).map(String::length).min(Integer::compareTo).get();        
+        
+        String prefix = "";
+        characterLoop: for (int i = 0; i < min; i++) {
+            char checker = strs[0].charAt(i);
+            for (String string : strs) {
+                if (string.charAt(i) != checker) {
+                    break characterLoop;
+                }
+            }
+            prefix += checker;
+        }
+        
+        return prefix;
+    }
+}
