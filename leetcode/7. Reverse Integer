@@ -1,0 +1,19 @@
+class Solution {
+    public int reverse(int x) {
+        
+        int sign = Integer.signum(Integer.valueOf(x));
+        x = Math.abs(x);
+        long reversed = 0;
+        while(x != 0) {
+
+          int digit = x % 10;
+          reversed = reversed * 10 + digit;
+
+          x /=10;
+        }
+        if (reversed > 2147483648L || reversed < -2147483648L) {
+            return 0;
+        }
+        return sign * (int) reversed;
+    }
+}
