@@ -1,0 +1,56 @@
+import java.lang.Character;
+import static java.lang.Math.floor;
+class Solution {
+    public int lengthOfLongestSubstring(String s) {
+        
+        if (s.length() == 1 ) {
+            return 1;
+        }
+        
+        // An example of how this loop iterates is as follows.
+        // Input: "dvdf"
+        // Candidate: 
+        // 1: d
+        // 2: dv
+        // 3: v (as we have done Candidate does contain "d", so add it to the list.
+        //       Now set the candidate as the next character in the input.)
+        // 4: vd
+        // 5: vdf <- Add to array, as at end.
+        // 6: return vdf (Due to early return checker)
+        
+        int maxLength = 0;
+        for (int i = 0; i < s.length(); i++) {
+            String candidate = String.valueOf(s.charAt(i));
+
+            for (int x = i + 1; x < s.length(); x++) {
+                char checkChar = s.charAt(x);
+                if (candidate.contains(String.valueOf(checkChar))) {
+                    if (candidate.length() > maxLength) {
+                        maxLength = candidate.length();
+                    }
+                    break;
+                } else if (x == s.length() - 1) {
+                    candidate += String.valueOf(checkChar);
+                    if (candidate.length() > maxLength) {
+                        maxLength = candidate.length();
+                    }
+                } else {
+                    candidate += String.valueOf(checkChar);
+                }
+            }
+            
+            // Attempt Early return for optimisation!
+            if (i <= Math.floor((s.length() - 1)/2) 
+                && candidate.length() + i + 1 >= s.length() 
+                && candidate.length() != 1 
+                && candidate.length() > maxLength) {
+                return candidate.length();
+            }
+            
+        }
+        
+        
+        return maxLength;
+        
+    }
+}
