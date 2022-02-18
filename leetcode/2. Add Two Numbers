@@ -1,0 +1,91 @@
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+
+// https://leetcode.com/problems/add-two-numbers/
+import java.math.BigInteger;
+class Solution {
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        
+        // Edge Case
+        if ((l1.val == 0 && l1.next == null) && (l2.val == 0 && l2.next == null)) {return new ListNode(0);}
+        if (l1.val == 0 && l1.next == null) {return l2;}
+        if (l2.val == 0 && l2.next == null) {return l1;}
+        
+        BigInteger l1Big = new BigInteger(listNodeToString(l1, ""));
+        BigInteger l2Big = new BigInteger(listNodeToString(l2, ""));
+        
+        BigInteger bigIntegerAnswer = l1Big.add(l2Big);
+        BigInteger bigIntegerAnswerSaved = bigIntegerAnswer;
+        
+        BigInteger reversed = BigInteger.valueOf(0);
+        while(bigIntegerAnswer != BigInteger.valueOf(0)) {
+
+          BigInteger digit = bigIntegerAnswer.mod(BigInteger.valueOf(10));
+          reversed = reversed.multiply(BigInteger.valueOf(10)).add(digit);
+
+          bigIntegerAnswer = bigIntegerAnswer.divide(BigInteger.valueOf(10));
+        }
+        
+        return addZeroPadding(String.valueOf(bigIntegerAnswerSaved).length() - String.valueOf(reversed).length(), 
+                              makeAnswerListNode(reversed, null));
+    }
+    
+    public ListNode addZeroPadding(Integer zeroAmount, ListNode listNode) {
+        
+        if (zeroAmount == 0) {
+            return listNode;
+        }
+        
+        ListNode returnListNode = new ListNode();
+        for (int i = 0; i < zeroAmount; i++) {
+            if (i == 0) {
+                returnListNode = new ListNode(0, listNode);
+            } else {
+                returnListNode = new ListNode(0, returnListNode);
+            }
+        }
+        
+        return returnListNode;
+    }
+    
+    public String listNodeToString(ListNode listNode, String answerString ) {
+        answerString = Integer.toString(listNode.val) + answerString;
+        if (listNode.next != null) {
+            answerString = listNodeToString(listNode.next, answerString);
+        }
+        
+        return answerString;
+    }
+
+    
+    public ListNode makeAnswerListNode(BigInteger answerInt, ListNode listNode) {
+        System.out.println(answerInt);
+        ListNode finalNode = new ListNode();
+        ListNode recursionNode;
+        
+        if (answerInt.compareTo(BigInteger.valueOf(10)) == -1) {
+            return new ListNode(answerInt.intValue(), listNode);
+        }
+        
+        if (listNode == null) {
+            
+            recursionNode = new ListNode((answerInt.mod(BigInteger.valueOf(10))).intValue());              
+            finalNode = makeAnswerListNode(answerInt.divide(BigInteger.valueOf(10)), recursionNode);
+        } else {
+            
+            recursionNode = new ListNode((answerInt.mod(BigInteger.valueOf(10))).intValue(), listNode);            
+            finalNode = makeAnswerListNode(answerInt.divide(BigInteger.valueOf(10)), recursionNode);
+        }
+        
+        return finalNode;
+    }
+    
+}
