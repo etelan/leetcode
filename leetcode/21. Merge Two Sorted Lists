@@ -1,0 +1,71 @@
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode mergeTwoLists(ListNode list1, ListNode list2) {
+                
+        if ((list1 == null) && (list2 == null)) {
+            return null;
+        }
+        
+        // If one is empty, return the other.
+        if (list1 == null) {
+            return list2;
+        }
+        if (list2 == null) {
+            return list1;
+        }
+        
+        ListNode answerNode = new ListNode(0);
+        ListNode prev = answerNode;
+
+        // While there is still stuff to iterate over in both lists
+        while (list1 != null && list2 != null) {
+            
+            // If one list val is less than the other
+            if (list1.val <= list2.val) {
+                
+                // Set the next node to be the correct node
+                prev.next = list1;
+                
+                // Update our list that we are iterating over
+                list1 = list1.next;
+                
+            } else {
+                
+                // Set the next node to be the correct node
+                prev.next = list2;
+                
+                // Update our list that we are iterating over
+                list2 = list2.next;
+                
+            }
+            prev = prev.next;
+        }
+        
+        // Else, fill in the end.
+        if (list1 == null) {
+            prev.next = list2;
+        }
+        
+        if (list2 == null) {
+            prev.next = list1;
+        }
+        
+        
+        
+        return answerNode.next;
+    }
+    
+
+    
+}
+
+// Grab Value, add to list
