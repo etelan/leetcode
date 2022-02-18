@@ -1,0 +1,19 @@
+import java.lang.Math;
+class Solution {
+    public boolean isPalindrome(int x) {
+        
+        int xSaved = x;
+        x = Math.abs(x);
+        int reversed = 0;
+        while(x != 0) {
+
+          int digit = x % 10;
+          reversed = reversed * 10 + digit;
+
+          x /=10;
+        }
+        
+        return xSaved == reversed;
+        
+    }
+}
